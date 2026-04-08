@@ -1160,6 +1160,176 @@ justify-content: center;
     text-decoration: underline;
 }
 
+@media (max-width: 768px) {
+  /* 1. Force the popup container to the bottom or center */
+  .leaflet-popup {
+    position: fixed !important;
+    bottom: 20px !important; /* Distance from bottom bar */
+    left: 50% !important;
+    transform: translateX(-50%) !important; /* Perfect horizontal center */
+    margin: 0 !important;
+    z-index: 3000 !important;
+    width: 90vw !important; /* Takes up most of the width */
+  }
+
+  /* 2. Hide the tip (the little triangle) as it won't point to the marker anymore */
+  .leaflet-popup-tip-container {
+    display: none !important;
+  }
+
+  /* 3. Ensure the wrapper stays centered and scales correctly */
+  .leaflet-popup-content-wrapper {
+    width: 100% !important;
+    border-radius: 16px !important; /* Softer rounded look for mobile */
+    box-shadow: 0 -5px 25px rgba(0,0,0,0.2) !important;
+  }
+
+  /* 4. Allow the content to be scrollable if it's long */
+  .leaflet-popup-content {
+    max-height: 60vh; 
+    overflow-y: auto;
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 768px) {
+    /* Force the map to fill the entire width */
+    #map {
+        left: 0 !important;
+        width: 100% !important;
+    }
+
+    /* Ensure the sidebar doesn't push the map layout */
+    #sidebar {
+        left: 0 !important;
+        width: 100% !important;
+    }
+
+    /* Remove any margin/shift caused by the collapsed sidebar class on mobile */
+    #sidebar.collapsed ~ #map {
+        left: 0 !important;
+        width: 100% !important;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Target the main container */
+    .leaflet-popup {
+        position: fixed !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        width: 95vw !important; /* Almost full width */
+        max-width: 95vw !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        z-index: 9999 !important;
+    }
+
+    /* Force the wrapper to occupy the viewable area */
+    .leaflet-popup-content-wrapper {
+        width: 100% !important;
+        height: auto !important;
+        max-height: 80vh !important; /* Occupy up to 80% of screen height */
+        border-radius: 12px !important;
+        overflow-y: auto !important; /* Enable scrolling if content is long */
+        box-shadow: 0 0 50px rgba(0,0,0,0.5) !important;
+    }
+
+    /* Remove the 'tip' (tail) which causes centering offsets */
+    .leaflet-popup-tip-container {
+        display: none !important;
+    }
+
+    /* Ensure the content inside uses all available space */
+    .leaflet-popup-content {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Fix the close button position for easy thumb access */
+    .leaflet-popup-close-button {
+        padding: 12px !important;
+        font-size: 24px !important;
+        color: #333 !important;
+        z-index: 10000 !important;
+    }
+}
+
+marker.bindPopup(popupContent, {
+    autoPan: false,           // CRITICAL: prevents map from jumping
+    keepInView: false,        // Prevents Leaflet from fighting your CSS
+    closeButton: true,
+    className: 'mobile-full-popup'
+});
+
+@media (max-width: 768px) {
+  .leaflet-popup {
+    /* Position fixed to the screen viewport, not the map */
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    bottom: auto !important;
+    /* This centers it exactly regardless of popup size */
+    transform: translate(-50%, -50%) !important; 
+    margin: 0 !important;
+    width: 85vw !important; /* Adjust width to preference */
+    z-index: 4000 !important;
+  }
+
+  /* Hide the little triangle/tail */
+  .leaflet-popup-tip-container {
+    display: none !important;
+  }
+
+  /* Ensure the content box fills the 85vw width */
+  .leaflet-popup-content-wrapper {
+    width: 100% !important;
+    border-radius: 12px !important;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3) !important;
+  }
+
+  .leaflet-popup-content {
+    width: 100% !important;
+    margin: 0 !important;
+  }
+}
+
+@media (max-width: 600px) {
+    #controls {
+        /* Move to top left */
+        top: 10px !important;
+        left: 10px !important;
+        
+        /* Reset the centering transform */
+        transform: none !important;
+        
+        /* Shrink it slightly for mobile screen real estate */
+        width: auto !important;
+        max-width: 180px; 
+        padding: 8px 12px !important;
+        font-size: 12px;
+    }
+
+    #yearSlider {
+        width: 100% !important; /* Make slider fill the small container */
+        margin: 5px 0 !important;
+    }
+
+    #yearLabel {
+        font-size: 14px !important;
+    }
+
+    /* Optional: If the "Remove Cane Toads" text is too long, 
+       this makes it stack or wrap neatly */
+    #controls label {
+        display: block;
+        font-size: 11px;
+        white-space: nowrap;
+    }
+}
+
 /* =========================
 ADAPTIVE POPUP
 ========================= */

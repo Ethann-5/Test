@@ -431,7 +431,7 @@ POPUP TABS
 }
 
 #data.tabContent {
-    max-height: 400px;      
+    max-height: 250px;      
     overflow-y: auto;
     overflow-x: hidden;
     font-size: 18px;       
@@ -474,6 +474,26 @@ POPUP TABS
     touch-action: pan-y;
 }
 
+/* Scales the entire popup container down to 85% of its original size */
+.leaflet-popup-content-wrapper {
+    border-radius: 12px;
+    padding: 0;
+    overflow: hidden;
+    transform: scale(0.85); /* Scales the UI */
+    transform-origin: bottom center; /* Keeps the tail/tip aligned */
+}
+
+/* Ensures the content within respects the new scale */
+.leaflet-popup-content {
+    margin: 0;
+    width: auto !important;
+}
+
+/* Adjust the popup container to handle the scaling visual shift */
+.leaflet-popup {
+    margin-bottom: 5px; 
+}
+
 /* MOBILE IMPROVEMENTS */
 @media (max-width: 768px) {
 
@@ -491,6 +511,8 @@ POPUP TABS
         border-left: none; /* remove left border if any */
         border-top: 1px solid #ccc; /* optional top border */
     }
+
+
 
   #map {
         top: 0;
@@ -878,7 +900,7 @@ RESPONSIVE DESIGN
     }
 
     #plotContent {
-        height: 40vh;
+        height: 20vh;
     }
 }
 
@@ -981,7 +1003,7 @@ justify-content: center;
 
 /* BODY */
 .popup-body {
-    padding: 10px 12px;
+    padding: 8px 12px;
 }
 
 /* SPECIES CHIPS */
@@ -1007,26 +1029,11 @@ justify-content: center;
     background: #e4e7eb;
 }
 
-/* IUCN BADGE */
-.iucn {
-    display: inline-block;
-    padding: 2px 6px;
-    border-radius: 6px;
-    font-size: 11px;
-    font-weight: 600;
-    margin-left: 6px;
-    color: white;
-}
 
-.iucn.LC { background: #2ecc71; }
-.iucn.NT { background: #f1c40f; }
-.iucn.VU { background: #e67e22; }
-.iucn.EN { background: #e74c3c; }
-.iucn.CR { background: #8e44ad; }
 
 /* MINI CHART */
 .popup-chart {
-    height: 180px;
+    height: 50px;
     margin-top: 8px;
 }
 
@@ -1048,13 +1055,12 @@ justify-content: center;
 
 .data-row {
     display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    margin-bottom: 10px;
-    padding-bottom: 8px;
+    align-items: center; /* Centers items vertically for a tighter look */
+    gap: 8px;            /* Reduced from 10px */
+    margin-bottom: 4px;  /* Reduced from 10px - this is the main vertical spacing */
+    padding-bottom: 4px; /* Reduced from 8px */
     border-bottom: 1px solid #eee;
 }
-
 .data-img {
     width: 60px;
     height: 60px;
@@ -1074,12 +1080,61 @@ justify-content: center;
     flex-direction: column;
     align-items: flex-start;
     text-align: left;
-  line-height: 1.25;   
-    gap: 2px;           
+    line-height: 1.1;    /* Tighter line spacing */
+    gap: 0;            /* Removes gap between Common and Scientific name */
+    font-size: 13px;     /* Overall smaller font for the row */
 }
 
+/* Container to ensure it centers correctly */
+#intro {
+    position: fixed; 
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.75); /* Darkened slightly for better focus */
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    z-index: 5000; /* Higher than sidebar/map */
+    padding: 15px; /* Ensures the box never touches the screen edges */
+    box-sizing: border-box;
+}
 
+/* The actual modal box */
+#introBox {
+    background: white;
+    padding: 25px; /* Reduced from 35px */
+    max-width: 600px;   
+    width: 100%; /* Allows it to shrink on mobile */
+    max-height: 90vh; /* Prevents it from being taller than the screen */
+    border-radius: 12px;
+    position: relative;
+    text-align: center;
+    overflow-y: auto; /* Adds scrollbar if content is too long for small screens */
+    box-sizing: border-box;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
 
+/* Mobile specific tweaks */
+@media (max-width: 600px) {
+    #introBox {
+        padding: 20px 15px;
+        width: 95%;
+    }
+    
+    #introBox h2 {
+        font-size: 1.2rem;
+        margin-top: 10px;
+    }
+    
+    #introBox p {
+        font-size: 13px; /* Smaller text for mobile readability */
+        line-height: 1.4;
+    }
+
+    #introBox img {
+        height: 45px !important; /* Scale logos down */
+    }
+}
 
 /* TAB CONTENT ANIMATION */
 .tabContent {
@@ -1118,7 +1173,7 @@ ADAPTIVE POPUP
 @media (min-width: 900px) {
     .leaflet-popup-content-wrapper {
         min-width: 520px;
-        max-width: 850px;
+        max-width: 600px;
     }
 }
 

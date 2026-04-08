@@ -3,8 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title> Frog Survey Map</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -476,15 +475,52 @@ POPUP TABS
 }
 
 /* MOBILE IMPROVEMENTS */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
 
-    .leaflet-popup-content-wrapper {
-        max-width: 95vw !important;
-        border-radius: 10px;
+  #sidebar {
+        position: fixed;
+        bottom: 0;
+        top: auto;
+        left: 0;
+        width: 100%;
+        height: 70px; /* adjust for button height */
+        flex-direction: row;
+        overflow-x: auto;
+        z-index: 2000;
+        background: #fff; /* same as sidebar */
+        border-left: none; /* remove left border if any */
+        border-top: 1px solid #ccc; /* optional top border */
+    }
+
+  #map {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: calc(100dvh - 70px); /* subtract bottom bar height */
+    }
+
+
+    .leaflet-popup-content-wrapper,
+    .leaflet-popup-tip {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 100% !important;
+        max-height: 100% !important;
+        border-radius: 0 !important;
     }
 
     .leaflet-popup-content {
         font-size: 13px;
+       height: 100%;
+        overflow-y: auto;
+    }
+
+
+
+   .leaflet-popup-close-button {
+        top: 10px;
+        right: 10px;
+        font-size: 20px;
     }
 
     .popup-body {
@@ -1800,6 +1836,13 @@ highlightSelectedSites();
         siteButtonsDiv.appendChild(wrap);
     });
 }
+
+
+window.addEventListener('orientationchange', () => {
+    setTimeout(() => {
+        map.invalidateSize();
+    }, 300); // small delay lets browser finish rotation
+});
 
 /* =========================
 UPDATE SITE BUTTONS WHEN SPECIES CHANGES

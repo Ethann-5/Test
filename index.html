@@ -515,6 +515,20 @@ POPUP TABS
         overflow-y: auto;
     }
 
+.sideBtn {
+    min-height: 48px;
+    font-size: 16px;
+}
+
+.popup-tab {
+    min-height: 44px;
+    font-size: 14px;
+}
+
+button {
+    min-height: 44px;
+}
+
 
 
    .leaflet-popup-close-button {
@@ -522,6 +536,48 @@ POPUP TABS
         right: 10px;
         font-size: 20px;
     }
+
+@media (max-width: 768px) {
+  #sidebar {
+      height: 65px;
+      justify-content: space-around;
+      padding: 0;
+  }
+
+  .sideBtn {
+      flex-direction: column;
+      font-size: 11px;
+      padding: 6px 4px;
+  }
+
+  .sideBtn span.iconEmoji {
+      font-size: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+
+  /* FULLSCREEN POPUP (bottom sheet style) */
+  .leaflet-popup {
+      position: fixed !important;
+      bottom: 0;
+      left: 0 !important;
+      transform: none !important;
+      width: 100vw !important;
+      margin: 0;
+  }
+
+  .leaflet-popup-content-wrapper {
+      border-radius: 16px 16px 0 0 !important;
+      max-height: 75vh;
+      overflow-y: auto;
+  }
+
+  .leaflet-popup-close-button {
+      top: 12px;
+      right: 12px;
+  }
+}
 
     .popup-body {
         max-height: 50vh;
@@ -577,6 +633,7 @@ font-weight:bold;
     display:none;
     position:fixed;
     top:0;
+box-sizing: border-box;
     right:0;
     width:420px;
     height:100%;
@@ -1838,11 +1895,7 @@ highlightSelectedSites();
 }
 
 
-window.addEventListener('orientationchange', () => {
-    setTimeout(() => {
-        map.invalidateSize();
-    }, 300); // small delay lets browser finish rotation
-});
+
 
 /* =========================
 UPDATE SITE BUTTONS WHEN SPECIES CHANGES

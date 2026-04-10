@@ -337,13 +337,13 @@ h2, h3 {
     right: auto;
 }
 
-#extraSpace h3 {
-    margin: 6px 0 2px 0;
-}
-
-#extraSpace p {
-    margin: 2px 0;
-    line-height: 1.2;
+#extraSpace h3, #extraSpace p {
+    margin: 4px 0;
+    line-height: 1.4;
+    word-wrap: break-word;    
+    overflow-wrap: break-word; 
+    white-space: normal;     
+    max-width: 100%;         
 }
 
 #extraSpace {
@@ -799,10 +799,12 @@ color:#444;
 margin-left:4px;
 }
 #plotFlexContainer {
-    display:flex;
-    flex-direction:column;
-    gap:16px;
-    height:auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    box-sizing: border-box; 
+    overflow-x: hidden; /* Prevents horizontal scroll leaks */
 }
 
 #plotContent {
@@ -1295,8 +1297,8 @@ justify-content: center;
 }
 
 marker.bindPopup(popupContent, {
-    autoPan: false,           // CRITICAL: prevents map from jumping
-    keepInView: false,        // Prevents Leaflet from fighting your CSS
+    autoPan: false,          
+    keepInView: false,       
     closeButton: true,
     className: 'mobile-full-popup'
 });
@@ -1314,6 +1316,21 @@ marker.bindPopup(popupContent, {
     width: 85vw !important; /* Adjust width to preference */
     z-index: 4000 !important;
   }
+
+.leaflet-map-pane {
+        transform: none !important;
+    }
+
+.leaflet-popup {
+        position: fixed !important;
+        top: 50% !important;
+        left: 50% !important;
+        bottom: auto !important;
+        transform: translate(-50%, -50%) !important;
+        margin: 0 !important;
+    }
+
+
 
   /* Hide the little triangle/tail */
   .leaflet-popup-tip-container {

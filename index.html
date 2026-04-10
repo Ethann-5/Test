@@ -495,30 +495,78 @@ POPUP TABS
 }
 
 /* MOBILE IMPROVEMENTS */
+/* ===== MOBILE APP BAR + SLIDE PANEL ===== */
 @media (max-width: 768px) {
 
+  /* Bottom app bar */
   #sidebar {
-        position: fixed;
-        bottom: 0;
-        top: auto;
-        left: 0;
-        width: 100%;
-        height: 70px; /* adjust for button height */
-        flex-direction: row;
-        overflow-x: auto;
-        z-index: 2000;
-        background: #fff; /* same as sidebar */
-        border-left: none; /* remove left border if any */
-        border-top: 1px solid #ccc; /* optional top border */
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 70px;
+      background: white;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 4000;
+      box-shadow: 0 -3px 10px rgba(0,0,0,0.2);
+  }
+
+  /* Expandable panel */
+  #sidebar.expanded {
+      height: 75vh;
+      flex-direction: column;
+      justify-content: flex-start;
+      overflow-y: auto;
+  }
+
+  /* Drag handle */
+  #dragHandle {
+      width: 40px;
+      height: 5px;
+      background: #ccc;
+      border-radius: 3px;
+      margin: 8px auto;
+      display: none;
+  }
+
+  #sidebar.expanded #dragHandle {
+      display: block;
+  }
+
+  /* Buttons layout */
+  #sidebar.expanded .sideBtn {
+      width: 90%;
+  }
+
+  /* Map always fullscreen */
+  #map {
+      left: 0 !important;
+      width: 100% !important;
+      height: calc(100dvh - 70px) !important;
+  }
+}
+    #colorLegend {
+        bottom: 80px !important; /* sits above bottom bar */
+        right: 10px;
+        z-index: 1500;
+    }
+}
+
+
+
+    #map {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100dvh !important;
     }
 
-
-
-  #map {
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: calc(100dvh - 70px); /* subtract bottom bar height */
+    #controls {
+        top: 10px !important;
     }
 
 
@@ -560,44 +608,77 @@ button {
     }
 
 @media (max-width: 768px) {
-  #sidebar {
-      height: 65px;
-      justify-content: space-around;
-      padding: 0;
-  }
 
-  .sideBtn {
-      flex-direction: column;
-      font-size: 11px;
-      padding: 6px 4px;
-  }
+    #sidebar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 70px;
+        background: #fff;
+        z-index: 3000;
+        transition: transform 0.3s ease;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
 
-  .sideBtn span.iconEmoji {
-      font-size: 20px;
-  }
+    /* COLLAPSED STATE */
+   #sidebar.collapsed {
+    transform: translateY(55px); 
 }
 
+    /* Toggle button */
+ #collapseBtn {
+    position: absolute;
+    top: -18px;            
+    left: 50%;
+    transform: translateX(-50%);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #0077cc;
+    color: white;
+    border: none;
+    z-index: 4000;
+    font-size: 16px;
+}
+}
+
+
+/* ===== MOBILE FULLSCREEN POPUP ===== */
 @media (max-width: 768px) {
 
-  /* FULLSCREEN POPUP (bottom sheet style) */
   .leaflet-popup {
       position: fixed !important;
-      bottom: 0;
+      top: 0 !important;
       left: 0 !important;
-      transform: none !important;
       width: 100vw !important;
-      margin: 0;
+      height: 100dvh !important;
+      margin: 0 !important;
+      transform: none !important;
+      z-index: 5000 !important;
   }
 
   .leaflet-popup-content-wrapper {
-      border-radius: 16px 16px 0 0 !important;
-      max-height: 75vh;
+      height: 100%;
+      border-radius: 0;
       overflow-y: auto;
   }
 
+  .leaflet-popup-content {
+      height: 100%;
+      padding: 10px;
+  }
+
   .leaflet-popup-close-button {
-      top: 12px;
-      right: 12px;
+      font-size: 24px;
+      top: 15px;
+      right: 15px;
+  }
+
+  .leaflet-popup-tip-container {
+      display: none;
   }
 }
 
@@ -665,16 +746,17 @@ box-sizing: border-box;
     padding:16px;
     overflow-y:auto;
     animation: slideIn 0.25s ease;
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     #plotWindow {
-        width: 100%;
-        height: 100%;
+        position: fixed;
+        top: 0;
         left: 0;
-        right: 0;
+        width: 100vw;
+        height: 100dvh;
+        z-index: 5000;
         border-radius: 0;
     }
 }
-
 }
 
 #backButton{
@@ -1424,6 +1506,7 @@ ADAPTIVE POPUP
 <!-- ===== SIDEBAR ===== -->
 <div id="sidebar">
     
+    <div id="dragHandle"></div>
     <div id="sidebarHeader" style="flex-direction:column; align-items:center;">
     <img src="https://raw.githubusercontent.com/Ethann-5/Frog_Map_Assets/main/Images/Logos/ECO_Logo.jpg" style="height:60px; margin-bottom:10px;">
     </div>
@@ -1541,9 +1624,10 @@ MAP SETUP
 ========================= */
 const map = L.map("map", {
     tap: true,
-    scrollWheelZoom: false,   // 🔥 KEY FIX
     dragging: true,
-    touchZoom: true
+    touchZoom: true,
+    scrollWheelZoom: false,
+    doubleClickZoom: false
 }).setView([-26.58,153.09],11);
 const baseLayer = L.tileLayer(
   'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
@@ -2395,11 +2479,28 @@ document.getElementById("plotsSidebarBtn").onclick = (e) => {
 
 document.getElementById("collapseBtn").onclick = () => {
     const sidebar = document.getElementById("sidebar");
+    const btn = document.getElementById("collapseBtn");
+
     sidebar.classList.toggle("collapsed");
 
-    document.getElementById("collapseBtn").textContent =
-        sidebar.classList.contains("collapsed") ? "▶" : "◀";
+    if (window.innerWidth <= 768) {
+        // MOBILE (up/down)
+        btn.textContent = sidebar.classList.contains("collapsed") ? "▲" : "▼";
+    } else {
+        // DESKTOP (left/right)
+        btn.textContent = sidebar.classList.contains("collapsed") ? "▶" : "◀";
+    }
 };
+
+window.addEventListener("load", () => {
+    const btn = document.getElementById("collapseBtn");
+
+    if (window.innerWidth <= 768) {
+        btn.textContent = "▼"; // mobile default
+    } else {
+        btn.textContent = "◀"; // desktop default
+    }
+});
 
 /* =========================
 BASEMAP SWITCHER
@@ -2600,6 +2701,28 @@ populateSpeciesDropdown();
 
 },1000);
 
+// ===== MOBILE SIDEBAR TOGGLE =====
+const sidebar = document.getElementById("sidebar");
+
+let startY = 0;
+
+sidebar.addEventListener("touchstart", e => {
+    startY = e.touches[0].clientY;
+});
+
+sidebar.addEventListener("touchmove", e => {
+    const currentY = e.touches[0].clientY;
+    const diff = startY - currentY;
+
+    if (diff > 50) {
+        sidebar.classList.add("expanded");
+    }
+
+    if (diff < -50) {
+        sidebar.classList.remove("expanded");
+    }
+});
+
 
 </script>
 
@@ -2612,4 +2735,4 @@ populateSpeciesDropdown();
     <button id="fullscreenNext">▶</button>
 </div>
 </body>
-</html>
+</html>#

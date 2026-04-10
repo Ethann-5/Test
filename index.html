@@ -45,9 +45,7 @@ h2, h3 {
     flex-direction: column;
     gap: 12px;  
 }
-#sidebar.collapsed {
-    width: 90px;
-}
+
 #basemapBtn {
     width: auto;         
     padding-right: 10px; 
@@ -149,27 +147,12 @@ h2, h3 {
     margin-bottom: 15px;
 }
 
-#sidebar.collapsed #sidebarHeader {
-    align-items: center;
-}
+
 
 #sidebarHeader img {
     height: 50px;
 }
 
-#collapseBtn {
-    position: absolute;
-    top: 50%;
-    right: -12px;
-    transform: translateY(-50%);
-    background: #0077cc;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 26px;
-    height: 26px;
-    cursor: pointer;
-}
 
 
 
@@ -182,9 +165,7 @@ h2, h3 {
 }
 
 
-#sidebar.collapsed .sideBtn img {
-    margin: 0 auto;
-}
+
 
 /* TEXT */
 .sideBtn span {
@@ -192,19 +173,7 @@ h2, h3 {
 }
 
 
-/* COLLAPSED SIDEBAR BUTTONS */
-#sidebar.collapsed .sideBtn {
-    justify-content: center; 
-    gap: 0;                   
-}
 
-#sidebar.collapsed .sideBtn .sideText {
-    display: none !important; 
-}
-
-#sidebar.collapsed .sideBtn .iconEmoji {
-    display: inline-flex !important; 
-}
 /* MAP SHIFT */
 #map {
     position: absolute;
@@ -217,10 +186,7 @@ h2, h3 {
     transition: all 0.3s ease;
 }
 
-#sidebar.collapsed ~ #map {
-    left: 90px;
-    width: calc(100% - 90px);
-}
+
 .sideBtn:hover {
     background: #005fa3;
 }
@@ -514,27 +480,8 @@ POPUP TABS
         transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    /* COLLAPSED STATE: Move the entire bar down by its exact height */
-    #sidebar.collapsed {
-        transform: translateY(75px); 
-        box-shadow: none; /* Removes shadow "ghosting" when closed */
-    }
+   
 
-    /* Keep the toggle button visible above the bar */
-    #sidebar #collapseBtn {
-        position: absolute;
-        top: -45px; /* Adjust so it sits clearly above the bar */
-        left: 50%;
-        transform: translateX(-50%);
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: #0077cc;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
-    }
 }
     #colorLegend {
         bottom: 100px !important; /* sits above bottom bar */
@@ -633,6 +580,39 @@ button {
     }
 }
 
+@media (min-width: 769px) {
+    .control-credit {
+        display: block;
+    }
+}
+
+/* On Mobile: If you want it to stay under the slider there too */
+@media (max-width: 768px) {
+    #controls {
+        top: 10px; /* Adjust so it doesn't overlap the status bar */
+        width: 90%;
+    }
+    
+    .control-credit {
+        font-size: 9px; /* Slightly smaller for mobile */
+    }
+}
+
+.control-credit {
+    margin-top: 8px;
+    padding-top: 6px;
+    border-top: 1px solid #eee; /* Subtle separator line */
+    font-size: 10px;
+    text-align: center;
+    color: #888;
+}
+
+.control-credit a {
+    color: #0077cc;
+    text-decoration: none;
+    font-weight: 600;
+}
+
 
 
 
@@ -640,21 +620,90 @@ button {
 .leaflet-popup-content { margin: 0; }
 .leaflet-popup-tip { background: #fff; }
 
-/* CONTROLS */
-#controls{
-position:absolute;
-top:20px;  
-padding:10px 16px;
-left:50%;
-transform:translateX(-50%);
-background:white;
-padding:12px 18px;
-border-radius:8px;
-box-shadow:0 3px 8px rgba(0,0,0,0.3);
-z-index:1200;
+/* ===== CONTROLS & SIGNATURE ===== */
+#controls {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    padding: 12px 18px;
+    border-radius: 8px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+    z-index: 1200; /* Lower than panels (4000) and popups (5000) */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: auto;
 }
-#yearSlider{ width:220px; display:block; margin:0 auto; }
-.controlRow{ margin-bottom:6px; text-align:center; }
+
+#yearSlider { 
+    width: 220px; 
+    display: block; 
+    margin: 0 auto; 
+}
+
+.controlRow { 
+    margin-bottom: 6px; 
+    text-align: center; 
+}
+
+/* The Signature inside the Slider Box */
+.control-credit {
+    margin-top: 8px;
+    padding-top: 6px;
+    border-top: 1px solid #eee;
+    width: 100%;
+    text-align: center;
+    font-size: 10px;
+    color: #888;
+}
+
+.control-credit a {
+    color: #0077cc;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* ===== PLOT WINDOW FIXED ===== */
+#plotWindow {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 420px;
+    height: 100%;
+    background: #ffffff;
+    z-index: 4000; /* High z-index to cover the map and controls */
+    box-shadow: -4px 0 20px rgba(0,0,0,0.15);
+    padding: 16px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    animation: slideIn 0.25s ease;
+}
+
+/* ===== RESPONSIVE OVERRIDES ===== */
+@media (max-width: 768px) {
+    #controls {
+        top: 10px;
+        width: 85%;
+    }
+
+    /* Hide the credit on mobile if it clutters the slider, 
+       or keep it block to see it under the slider */
+    .control-credit {
+        display: block; 
+        font-size: 9px;
+    }
+
+    #plotWindow {
+        width: 100% !important;
+        left: 0;
+    }
+}
+
+/* DELETE all mentions of .map-signature from your file */
 
 /* PLOT WINDOW */
 #plotsButton{
@@ -742,9 +791,7 @@ gap:6px;
 }
 
 
-#sidebar.collapsed .sideBtn {
-    justify-content: center;
-}
+
 
 
 
@@ -768,14 +815,8 @@ gap:6px;
     border: 1px solid rgba(0, 119, 204, 0.5);
 }
 
-#sidebar.collapsed {
-    width: 90px;
-}
 
-#sidebar.collapsed ~ #map {
-    left: 90px;
-    width: calc(100% - 90px);
-}
+
 
 .siteBtn{
 padding:6px 12px;
@@ -1083,6 +1124,46 @@ justify-content: center;
     }
 }
 
+/* 1. HIDE BY DEFAULT (Desktop) */
+.map-signature {
+    display: none; 
+}
+
+/* 2. SHOW ONLY ON MOBILE */
+@media (max-width: 768px) {
+    .map-signature {
+        display: block; /* Make it visible */
+        position: fixed;
+        bottom: 85px;   /* Sits above your 75px bottom bar */
+        right: 10px;
+        z-index: 5000;
+        font-family: 'Poppins', sans-serif;
+        font-size: 10px;
+        background: rgba(255, 255, 255, 0.85);
+        padding: 4px 10px;
+        border-radius: 6px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        backdrop-filter: blur(4px);
+    }
+
+    .map-signature a {
+        color: #0077cc;
+        text-decoration: none;
+        font-weight: 600;
+    }
+}
+/* MOBILE VIEW ADJUSTMENT */
+@media (max-width: 768px) {
+    .map-signature {
+        /* This moves the signature up so it doesn't get 
+           hidden by your 75px bottom navigation bar */
+        bottom: 85px; 
+        right: 10px;
+        background: rgba(255, 255, 255, 0.8);
+        box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+}
+
 .data-row {
     display: flex;
     align-items: center; /* Centers items vertically for a tighter look */
@@ -1252,11 +1333,7 @@ justify-content: center;
         width: 100% !important;
     }
 
-    /* Remove any margin/shift caused by the collapsed sidebar class on mobile */
-    #sidebar.collapsed ~ #map {
-        left: 0 !important;
-        width: 100% !important;
-    }
+ 
 }
 
 @media (max-width: 768px) {
@@ -1442,6 +1519,51 @@ ADAPTIVE POPUP
     }
 }
 
+/* 1. Base style for the credit */
+.control-credit {
+    margin-top: 8px;
+    padding-top: 6px;
+    border-top: 1px solid #eee;
+    width: 100%;
+    text-align: center;
+    font-size: 10px;
+    color: #888;
+}
+
+.control-credit a {
+    color: #0077cc;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* 2. Desktop Rule: Hide the credit inside the slider box */
+@media (min-width: 769px) {
+    #mobile-credit {
+        display: none !important;
+    }
+}
+
+/* 3. Mobile Rule: Show credit and clean up positioning */
+@media (max-width: 768px) {
+    #mobile-credit {
+        display: block !important;
+        font-size: 9px;
+    }
+
+    /* Ensure the slider box doesn't overlap the bottom nav */
+    #controls {
+        top: 10px;
+        width: 85%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    /* REMOVE any specific .map-signature blocks here */
+    .map-signature {
+        display: none !important;
+    }
+}
+
 
 </style>
 </head>
@@ -1502,8 +1624,6 @@ ADAPTIVE POPUP
     <span class="sideText">Getting Involved</span>
 </button>
 
-<button id="collapseBtn">◀</button>
-
 </div>
 
 <!-- ===== INFO PANEL ===== -->
@@ -1512,13 +1632,16 @@ ADAPTIVE POPUP
 </div>
 
 <div id="controls">
- <div class="controlRow">
-  <span id="yearLabel" style="font-weight:bold; font-size:16px;"></span>
+    <div class="controlRow">
+        <span id="yearLabel" style="font-weight:bold; font-size:16px;"></span>
+    </div>
+    <input type="range" id="yearSlider">
+    <label><input type="checkbox" id="toadToggle"> Remove Cane Toads</label>
+    
+    <div id="mobile-credit" class="control-credit">
+        Developed by <a href="https://www.linkedin.com/in/ethan-norris-/" target="_blank">Ethan Norris</a>
+    </div>
 </div>
-<input type="range" id="yearSlider">
-<label><input type="checkbox" id="toadToggle"> Remove Cane Toads</label>
-</div>
-
 <div id="colorLegend"></div>
 <div id="map"></div>
 
@@ -1583,7 +1706,7 @@ MAP SETUP
 ========================= */
 const map = L.map("map", {
     tap: true,
-    scrollWheelZoom: false,   // 🔥 KEY FIX
+    scrollWheelZoom: false,  
     dragging: true,
     touchZoom: true
 }).setView([-26.58,153.09],11);
@@ -1610,6 +1733,9 @@ L.control.scale({
 L.control.layers(baseLayers, null, { position: 'topright' }).addTo(map);
 
 map.zoomControl.setPosition('topright');
+
+const myCredit = ' | Developed by <a href="https://www.linkedin.com/in/ethan-norris-/" target="_blank" style="color:#0077cc; font-weight:bold; text-decoration:none;">Ethan Norris</a>';
+map.attributionControl.addAttribution(myCredit);
 
 
 
@@ -1844,8 +1970,8 @@ function createCarousel(images, id){
         `).join("")}
 
         ${images.length>1 ? `
-            <button class="prev" onclick="prevSlide('${id}')">◀</button>
-            <button class="next" onclick="nextSlide('${id}')">▶</button>
+            <button class="prev" onclick="prevSlide('${id}')"></button>
+            <button class="next" onclick="nextSlide('${id}')"></button>
         `:""}
     </div>`;
 }
@@ -2435,30 +2561,8 @@ document.getElementById("plotsSidebarBtn").onclick = (e) => {
     closeInfoPanel();
 };
 
-document.getElementById("collapseBtn").onclick = () => {
-    const sidebar = document.getElementById("sidebar");
-    const btn = document.getElementById("collapseBtn");
 
-    sidebar.classList.toggle("collapsed");
 
-    if (window.innerWidth <= 768) {
-        // MOBILE (up/down)
-        btn.textContent = sidebar.classList.contains("collapsed") ? "▲" : "▼";
-    } else {
-        // DESKTOP (left/right)
-        btn.textContent = sidebar.classList.contains("collapsed") ? "▶" : "◀";
-    }
-};
-
-window.addEventListener("load", () => {
-    const btn = document.getElementById("collapseBtn");
-
-    if (window.innerWidth <= 768) {
-        btn.textContent = "▼"; // mobile default
-    } else {
-        btn.textContent = "◀"; // desktop default
-    }
-});
 
 /* =========================
 BASEMAP SWITCHER
@@ -2666,9 +2770,12 @@ populateSpeciesDropdown();
 <div id="imageFullscreenOverlay">
     <span id="closeImageFullscreen">✕</span>
 
-    <button id="fullscreenPrev">◀</button>
+    <button id="fullscreenPrev"></button>
     <img id="fullscreenImage">
-    <button id="fullscreenNext">▶</button>
+    <button id="fullscreenNext"></button>
+</div>
+<div class="map-signature">
+    Developed by <a href="https://www.linkedin.com/in/YOUR-PROFILE" target="_blank">Your Name</a>
 </div>
 </body>
 </html>#
